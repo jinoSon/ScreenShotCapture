@@ -4,6 +4,8 @@ using System.Drawing;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Forms;
+using ScreenShotCapture;
+using System.Windows.Media;
 
 namespace Delay
 {
@@ -16,19 +18,26 @@ namespace Delay
         /// Enables "minimize to tray" behavior for the specified Window.
         /// </summary>
         /// <param name="window">Window to enable the behavior for.</param>
+        public static MinimizeToTrayInstance _tray; 
         public static void Enable(Window window)
         {
             // No need to track this instance; its event handlers will keep it alive
-            new MinimizeToTrayInstance(window);
+           _tray =  new MinimizeToTrayInstance(window);
+        }
+
+        public static void RecodeMode(Icon _icon)
+        {
+            _tray.ChangeIcon(_icon);
         }
 
         /// <summary>
         /// Class implementing "minimize to tray" functionality for a Window instance.
         /// </summary>
-        private class MinimizeToTrayInstance
+        public class MinimizeToTrayInstance
         {
             private Window _window;
             private NotifyIcon _notifyIcon;
+            private static Icon _iconSource;
             private bool _balloonShown;
 
             /// <summary>
@@ -40,6 +49,18 @@ namespace Delay
                 Debug.Assert(window != null, "window parameter is null.");
                 _window = window;
                 _window.StateChanged += new EventHandler(HandleStateChanged);
+            }
+            public void ChangeIcon(Icon _icon)
+            {
+                if (_notifyIcon != null)
+                {
+                    this._notifyIcon.Icon = _icon;
+                }
+                else
+                {
+                    _iconSource = _icon;
+                }
+
             }
 
             /// <summary>
@@ -54,6 +75,7 @@ namespace Delay
                     // Initialize NotifyIcon instance "on demand"
                     _notifyIcon = new NotifyIcon();
                     _notifyIcon.Icon = Icon.ExtractAssociatedIcon(Assembly.GetEntryAssembly().Location);
+                    //_notifyIcon.Icon = _iconSource;
                     _notifyIcon.MouseClick += new MouseEventHandler(HandleNotifyIconOrBalloonClicked);
                     _notifyIcon.BalloonTipClicked += new EventHandler(HandleNotifyIconOrBalloonClicked);
                 }
@@ -83,5 +105,7 @@ namespace Delay
                 _window.WindowState = WindowState.Normal;
             }
         }
+
+        
     }
 }

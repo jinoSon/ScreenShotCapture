@@ -11,11 +11,9 @@
                 <Button Content="Change" Click="selectFolder"></Button>
             </StackPanel>
             <StackPanel Margin="5">
-                <Label HorizontalAlignment="Center">Press "Print Screen" to make screenshot</Label>
+                <Label HorizontalAlignment="Center">Press "Print Screen" </Label>
             </StackPanel>
-            <StackPanel Margin="5">
-                <Button Content="Make custom screenshot" Click="createCustomScreenShot"></Button>
-            </StackPanel>
+            <StackPanel Margin="5"/>
         </StackPanel>
     </Grid>
 </Window>

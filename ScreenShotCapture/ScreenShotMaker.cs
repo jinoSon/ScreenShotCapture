@@ -26,6 +26,22 @@ namespace ScreenShotCapture
             return image;
         }
 
+        public static Bitmap CaptureActivitiWindowScreen(double width, double height, double x = 0, double y = 0)
+        {
+            int ix, iy, iw, ih;
+            ix = Convert.ToInt32(x);
+            iy = Convert.ToInt32(y);
+            iw = Convert.ToInt32(width);
+            ih = Convert.ToInt32(height);
+            if (iw <= 0) iw = 1;
+            if (ih <= 0) ih = 1;
+            Bitmap image = new Bitmap(iw, ih, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+            Graphics graphics = Graphics.FromImage(image);
+      
+            graphics.CopyFromScreen(ix, iy, 0, 0, new System.Drawing.Size(iw, ih), CopyPixelOperation.SourceCopy);
+            return image;
+        }
+
         public static Bitmap SaveScreen(double width, double height, double x = 0, double y = 0)
         {
             int ix, iy, iw, ih;
