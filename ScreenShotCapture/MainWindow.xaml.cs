@@ -18,7 +18,7 @@ using System.IO;
 using Com.CurtisRutland.WpfHotkeys;
 using Delay;
 using System.Runtime.InteropServices;
-using MouseKeyboardLibrary;
+//using MouseKeyboardLibrary;
 using System.Diagnostics;
 
 namespace ScreenShotCapture
@@ -101,13 +101,13 @@ namespace ScreenShotCapture
             {
                 recodeMode = false;
                 this.Icon = getWindowIcon();
-                MinimizeToTray.RecodeMode(new System.Drawing.Icon("favicon.ico"));
+                MinimizeToTray.RecodeMode(new System.Drawing.Icon("../../favicon.ico"));
                 // "pack://application:,,/icon/GB4.bmp"
             }
             else{
                 recodeMode = true;
                 this.Icon = getWindowIcon();
-                MinimizeToTray.RecodeMode(new System.Drawing.Icon("faviconActive.ico"));
+                MinimizeToTray.RecodeMode(new System.Drawing.Icon("../../faviconActive.ico"));
             }
            
         }
