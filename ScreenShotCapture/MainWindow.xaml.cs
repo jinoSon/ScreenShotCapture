@@ -51,7 +51,8 @@ namespace ScreenShotCapture
         void MouseHook_MouseAction(object sender, MouseEventArgs e)
         {
 
-            if (this.WindowState == WindowState.Minimized)
+            //if (this.WindowState == WindowState.Minimized)
+            if (recodeMode)
             {
                 activieWindowSceen();
                 //makeFullScreen(System.Windows.Forms.Control.MousePosition.X, System.Windows.Forms.Control.MousePosition.Y);
@@ -100,13 +101,13 @@ namespace ScreenShotCapture
             {
                 recodeMode = false;
                 this.Icon = getWindowIcon();
-               // MinimizeToTray.RecodeMode(new System.Drawing.Icon("favicon.ico"));
+                MinimizeToTray.RecodeMode(new System.Drawing.Icon("favicon.ico"));
                 // "pack://application:,,/icon/GB4.bmp"
             }
             else{
                 recodeMode = true;
                 this.Icon = getWindowIcon();
-                //MinimizeToTray.RecodeMode(new System.Drawing.Icon("faviconActive.ico"));
+                MinimizeToTray.RecodeMode(new System.Drawing.Icon("faviconActive.ico"));
             }
            
         }
@@ -116,15 +117,17 @@ namespace ScreenShotCapture
 
             if (recodeMode)
             {
-                recodeMode = false;
-                address = new Uri("pack://application:,,/favicon.ico");
+               // recodeMode = false;
                 // "pack://application:,,/icon/GB4.bmp"
+                address = new Uri("pack://application:,,/faviconActive.ico");
+
             }
             else
             {
-                recodeMode = true;
+              //  recodeMode = true;
                 //this.Icon = new BitmapImage(new Uri("pack://application:,,/faviconActive.ico"));
-                address = new Uri("pack://application:,,/faviconActive.ico");
+                address = new Uri("pack://application:,,/favicon.ico");
+
             }
 
             return new BitmapImage(address);

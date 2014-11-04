@@ -28,6 +28,8 @@ namespace Delay
         public static void RecodeMode(Icon _icon)
         {
             _tray.ChangeIcon(_icon);
+            _tray.ChangeStateBallon();
+        //    _tray._notifyIcon.Visible = true;
         }
 
         /// <summary>
@@ -50,16 +52,27 @@ namespace Delay
                 _window = window;
                 _window.StateChanged += new EventHandler(HandleStateChanged);
             }
+            public void ChangeStateBallon()
+            {
+                
+                if (_tray._notifyIcon != null)
+                {
+                    _tray._notifyIcon.Visible = true;
+
+                }
+            }
             public void ChangeIcon(Icon _icon)
             {
                 if (_notifyIcon != null)
                 {
                     this._notifyIcon.Icon = _icon;
+                    _notifyIcon.ShowBalloonTip(60, null, _window.Title, ToolTipIcon.None);
                 }
                 else
                 {
                     _iconSource = _icon;
                 }
+                
 
             }
 
@@ -78,6 +91,7 @@ namespace Delay
                     //_notifyIcon.Icon = _iconSource;
                     _notifyIcon.MouseClick += new MouseEventHandler(HandleNotifyIconOrBalloonClicked);
                     _notifyIcon.BalloonTipClicked += new EventHandler(HandleNotifyIconOrBalloonClicked);
+                    
                 }
                 // Update copy of Window Title in case it has changed
                 _notifyIcon.Text = _window.Title;
@@ -86,12 +100,19 @@ namespace Delay
                 var minimized = (_window.WindowState == WindowState.Minimized);
                 _window.ShowInTaskbar = !minimized;
                 _notifyIcon.Visible = minimized;
+               // _notifyIcon.Visible = true;
+                
+                _notifyIcon.ShowBalloonTip(60, null, _window.Title, ToolTipIcon.None);
+                _balloonShown = true;
+
+                /*
                 if (minimized && !_balloonShown)
                 {
                     // If this is the first time minimizing to the tray, show the user what happened
                     _notifyIcon.ShowBalloonTip(1000, null, _window.Title, ToolTipIcon.None);
                     _balloonShown = true;
                 }
+                 */
             }
 
             /// <summary>
