@@ -35,7 +35,14 @@ namespace ScreenShotCapture
         private MyDataContext myDataContext;
         private Hotkey globalHotkey;
         private CustomWindow customWindow;
-       
+
+
+
+        [DllImport("user32.dll")]
+        public static extern IntPtr GetForegroundWindow();
+        [DllImport("user32.dll")]
+        public static extern IntPtr GetWindowRect(IntPtr hWnd, ref System.Drawing.Rectangle rect);
+
 
         public MainWindow()
         {
@@ -44,47 +51,36 @@ namespace ScreenShotCapture
             folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.DataContext = myDataContext;
             MinimizeToTray.Enable(this);
-            
+
+            this.Closed += MainWindow_Closed;
             
         }
 
-        void MouseHook_MouseAction(object sender, MouseEventArgs e)
-        {
-
-            //if (this.WindowState == WindowState.Minimized)
-            if (recodeMode)
-            {
-                activieWindowSceen();
-                //makeFullScreen(System.Windows.Forms.Control.MousePosition.X, System.Windows.Forms.Control.MousePosition.Y);
-            }
-            
-           
-           
-        }
-
-     
-       
         private void WindowLoaded(object sender, RoutedEventArgs e)
         {
-
             globalHotkey = new Hotkey(Modifiers.NoMod, Keys.PrintScreen, this, true);
             globalHotkey.HotkeyPressed += setRecodeMode;
 
             MouseHook.Start();
             MouseHook.MouseAction += MouseHook_MouseAction;
-          
+
         }
 
-
-      
-
-        private void WindowClosing(object sender, CancelEventArgs e)
+        void MainWindow_Closed(object sender, EventArgs e)
         {
             globalHotkey.Dispose();
             MouseHook.stop();
-       
         }
 
+        void MouseHook_MouseAction(object sender, MouseEventArgs e)
+        {
+            if (recodeMode)
+            {
+                activieWindowSceen();
+            }
+        }
+
+     
         private void selectFolder(object sender, RoutedEventArgs e)
         {
             System.Windows.Forms.DialogResult result = folderBrowserDialog.ShowDialog();
@@ -117,17 +113,11 @@ namespace ScreenShotCapture
 
             if (recodeMode)
             {
-               // recodeMode = false;
-                // "pack://application:,,/icon/GB4.bmp"
                 address = new Uri("pack://application:,,/faviconActive.ico");
-
             }
             else
             {
-              //  recodeMode = true;
-                //this.Icon = new BitmapImage(new Uri("pack://application:,,/faviconActive.ico"));
                 address = new Uri("pack://application:,,/favicon.ico");
-
             }
 
             return new BitmapImage(address);
@@ -136,18 +126,13 @@ namespace ScreenShotCapture
 
 
 
-        [DllImport("user32.dll")]
-        public static extern IntPtr GetForegroundWindow();
-        [DllImport("user32.dll")]
-        public static extern IntPtr GetWindowRect(IntPtr hWnd, ref System.Drawing.Rectangle rect);
 
         private void activieWindowSceen()
         {
             System.Drawing.Rectangle resolution = new System.Drawing.Rectangle();
             IntPtr tempPtr = GetForegroundWindow();
             GetWindowRect(tempPtr, ref resolution);
-
-
+            
             if (resolution.Width != 0 && resolution.Height != 00)
             {
                 System.Drawing.Bitmap image = ScreenShotMaker.CaptureScreen(resolution.Width - resolution.X, 
@@ -159,35 +144,7 @@ namespace ScreenShotCapture
                     
 
         }
-        private void makeFullScreen(int x = 0, int y = 0)
-        {
-            //double k = System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Width;
-
-            //System.Drawing.Rectangle resolution = System.Windows.Forms.Screen.GetBounds()
-
-
-            //System.Drawing.Rectangle resolution = System.Windows.Forms.Screen.PrimaryScreen.WorkingArea;
-
-
-            int key = 0; 
-
-            System.Windows.Forms.Screen[] tempScreenList = System.Windows.Forms.Screen.AllScreens;
-
-            for (int i = 0; i < tempScreenList.Length; i++)
-            {
-                if(tempScreenList[i].Bounds.Contains(new System.Drawing.Point(x, y))){
-                    key = i;
-                    break;
-                }
-                    
-            }
-            System.Drawing.Rectangle resolution = tempScreenList[key].Bounds;
-            System.Drawing.Bitmap image = ScreenShotMaker.CaptureScreen(resolution.Width, resolution.Height, resolution.X, resolution.Y);
-            saveImage(image);
-
-
-        }
-
+       
         private void saveImage(System.Drawing.Bitmap image)
         {
             createDirectory();

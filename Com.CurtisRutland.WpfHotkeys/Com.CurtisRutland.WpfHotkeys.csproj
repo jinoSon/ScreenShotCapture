@@ -43,7 +43,6 @@
     <Compile Include="HotkeyEventArgs.cs" />
     <Compile Include="HotkeyException.cs" />
     <Compile Include="HotkeyInfo.cs" />
-    <Compile Include="MouseEvent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Win32\Constants.cs" />
     <Compile Include="Win32\User32.cs" />

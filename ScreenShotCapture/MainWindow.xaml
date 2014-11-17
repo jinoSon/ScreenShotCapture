@@ -1,7 +1,7 @@
 ﻿<Window x:Class="ScreenShotCapture.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="ScreenShot Capture" Height="145" Width="535"
+        Title="Active Window Capture" Height="145" Width="535"
         Loaded="WindowLoaded" Icon="favicon.ico">
     <Grid>
         <StackPanel>
@@ -11,7 +11,9 @@
                 <Button Content="Change" Click="selectFolder"></Button>
             </StackPanel>
             <StackPanel Margin="5">
-                <Label HorizontalAlignment="Center">Press "Print Screen" </Label>
+                <Label HorizontalAlignment="Left" FontSize="10"> Print Screen  : Capture 활성화 On / Off</Label>
+                <Label HorizontalAlignment="Left" FontSize="10"> Mouse Left Up : Window Screen Capture</Label>
+                <Label HorizontalAlignment="Left" FontSize="10"> https://github.com/jinoSon/ScreenShotCapture</Label>
             </StackPanel>
             <StackPanel Margin="5"/>
         </StackPanel>
